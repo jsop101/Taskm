@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  status: MyString
+  owner: MyString
+  steps: 1
+  created: 2015-06-16
+  deadline: 2015-06-16
+  completed: false
+
+two:
+  status: MyString
+  owner: MyString
+  steps: 1
+  created: 2015-06-16
+  deadline: 2015-06-16
+  completed: false
