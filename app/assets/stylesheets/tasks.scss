@@ -1,3 +1,21 @@
-// Place all the styles related to the Tasks controller here.
+/*/ Place all the styles related to the Tasks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+*/
+
+tr.progress_line {
+  color: blue;
+}
+td.progress_field {
+  width: 30px;
+  height: 30px;
+  border: 1px solid black;
+}
+td.active {
+  background-color: black;
+  color: yellow;
+}
+div.task_log_element {
+  border: 1px solid black;
+  margin: 3px;
+}
