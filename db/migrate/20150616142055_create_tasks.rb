@@ -4,9 +4,9 @@ class CreateTasks < ActiveRecord::Migration
       t.string :status
       t.string :owner
       t.integer :steps
-      t.date :created
       t.date :deadline
       t.boolean :completed
+      t.text :description
 
       t.timestamps null: false
     end

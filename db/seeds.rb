@@ -6,3 +6,11 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
+20.times do
+  Task.create(status: %w(ToDo Complete Out In Defer).sample,
+              owner: Faker::Name.name,
+              steps: (rand(14) + 1),
+              deadline: Faker::Date.forward(50),
+              completed: [true, false].sample,
+              description: Faker::Hacker.say_something_smart)
+end

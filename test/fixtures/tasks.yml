@@ -4,14 +4,14 @@ one:
   status: MyString
   owner: MyString
   steps: 1
-  created: 2015-06-16
   deadline: 2015-06-16
   completed: false
+  description: MyText
 
 two:
   status: MyString
   owner: MyString
   steps: 1
-  created: 2015-06-16
   deadline: 2015-06-16
   completed: false
+  description: MyText
