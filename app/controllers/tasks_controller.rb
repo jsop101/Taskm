@@ -11,14 +11,17 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     p "?"*100
     if params["position_in_time"]
+      p 'if'
       @status = @task.statuses[params["position_in_time"].to_i]
-      respond_to do |format|
-      #   format.html { redirect_to @task}
-        format.json { render json: @status }
-      end
+      # respond_to do |format|
+      # #   format.html { redirect_to @task}
+      #   format.json { render json: @status }
+      # end
+      respond_with( @status )
     else
+      p 'else'
       @all_task_events = @task.statuses.length.to_s
-      respond_with({"num_of_all_task_events" => @all_task_events})
+      respond_with(@task)#{"num_of_all_task_events" => @all_task_events})
       # respond_to do |format|
       #   format.json { render json: {"num_of_all_task_events" => @all_task_events} }
       # end
