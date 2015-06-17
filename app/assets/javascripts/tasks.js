@@ -1,4 +1,18 @@
+var myTaskObject;
+var numOfAllTaskEvents;
+var currentTaskId = window.location.href.split("/").pop()
 
+var GetNumOfAllTaskEvents = (function (){
+  var url = '/tasks/' + currentTaskId + '/'
+  $.ajax({
+    url: url,
+    type: '/get',
+  }).done(function(response){
+    debugger;
+    console.log(response)
+  });
+
+})();
 var Task = function(taskName, taskLength) {
   this.taskName = taskName;
   this.taskLength = taskLength;
@@ -35,29 +49,32 @@ Board.prototype.printEmptyPositionInTime = function(numInOrder){
   $("tr.progress_line").append('<td class="progress_field">' + numInOrder + '</td>');
 };
 Board.prototype.printLogElement = function(){
+  var url = '/tasks/' + currentTaskId + '/'
+  // debugger;
   $.ajax({
-    url: '/tasks',
-    type: 'post',
+    url: url,
+    type: 'get',
     dataType: 'JSON',
     data: {"position_in_time": this.task.positionInTime}
   }).done(function(response) {
     console.log(response);
-    // $("div.task_log_container").append('<div class="task_log_element"><p class="task_log_line">' + "Step " + this.data.substr(this.data.length - 1) + '</p><p class="task_log_line">' + "Who: " + response.who + '</p><p class="task_log_line">' + "What: " + response.what + '</p><p class="task_log_line">' + "Why: " + response.why + '</p></div>');
+    // debugger;
+    $("div.task_log_container").append('<div class="task_log_element"><p class="task_log_line">' + "Step " + myTaskObject.positionInTime + '</p><p class="task_log_line">' + "Assigned to: " + response.assignee + '</p><p class="task_log_line">' + "Status: " + response.current_status  + '</p>'); //+'<p class="task_log_line">' + "Why: " + response.why + '</p></div>');
   });
 };
 Board.prototype.eraseLogElement = function(){
   $('div.task_log_container div:last-child').remove()
 };
 
-var myTaskObject  = new Task('My Task', 5);
-
+myTaskObject = new Task('My Task', 5);
+// debugger;
 $(document).ready(function(){
   var display = new Board(myTaskObject);
   display.drawBoard();
   $('body').on("click", 'button.time_travel_next', function(event){
     if (display.task.positionInTime < display.boardLength) {
       myTaskObject.advanceInTime();
-      // display.printLogElement();
+      display.printLogElement();
       display.eraseBoard();
       display.drawBoard();
     };
@@ -65,7 +82,7 @@ $(document).ready(function(){
   $('body').on("click", 'button.time_travel_back', function(event){
     if (display.task.positionInTime > 0) {
       myTaskObject.gobackInTime();
-      // display.eraseLogElement();
+      display.eraseLogElement();
       display.eraseBoard();
       display.drawBoard();
     };

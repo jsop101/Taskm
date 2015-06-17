@@ -7,10 +7,21 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 20.times do
-  Task.create(status: %w(ToDo Complete Out In Defer).sample,
-              owner: Faker::Name.name,
-              steps: (rand(14) + 1),
-              deadline: Faker::Date.forward(50),
-              completed: [true, false].sample,
-              description: Faker::Hacker.say_something_smart)
+  Task.create(
+    owner: Faker::Name.name,
+    deadline: Faker::Date.forward(50),
+    completed: [true, false].sample,
+    description: Faker::Hacker.say_something_smart
+  )
+  sleep(0.1)
+end
+
+Task.all.each do |task|
+  (rand(20)+5).times do
+    task.statuses.create(
+      assignee: Faker::Name.name,
+      current_status: %w(ToDo Complete Out In Defer).sample
+    )
+  end
+  sleep(0.1)
 end

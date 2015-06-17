@@ -11,15 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150616142055) do
+ActiveRecord::Schema.define(version: 20150617144314) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "statuses", force: :cascade do |t|
+    t.string   "assignee"
+    t.string   "current_status"
+    t.integer  "task_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "statuses", ["task_id"], name: "index_statuses_on_task_id", using: :btree
+
   create_table "tasks", force: :cascade do |t|
-    t.string   "status"
     t.string   "owner"
-    t.integer  "steps"
     t.date     "deadline"
     t.boolean  "completed"
     t.text     "description"
@@ -27,4 +35,5 @@ ActiveRecord::Schema.define(version: 20150616142055) do
     t.datetime "updated_at",  null: false
   end
 
+  add_foreign_key "statuses", "tasks"
 end
