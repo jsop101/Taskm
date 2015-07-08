@@ -6,8 +6,8 @@ var pageLoad = function(){
   $('body').on("click", 'button.time_travel_next', function(event){
     if (display.task.positionInTime < display.boardLength) {
       myTaskObject.advanceInTime();
-      display.eraseStatusElement();
-      display.printStatusElement();
+      display.eraseLogElement();
+      display.printLogElement();
       display.eraseBoard();
       display.drawBoard();
     };
@@ -17,8 +17,8 @@ var pageLoad = function(){
   $('body').on("click", 'button.time_travel_back', function(event){
     if (display.task.positionInTime > 1) {
       myTaskObject.gobackInTime();
-      display.eraseStatusElement();
-      display.printStatusElement();
+      display.eraseLogElement();
+      display.printLogElement();
       display.eraseBoard();
       display.drawBoard();
     };
@@ -27,8 +27,8 @@ var pageLoad = function(){
   // Click on progress board itself
   $('body').on("click","tr.progress_line",function(event){
     myTaskObject.positionInTime = parseInt(event.target.id);
-    display.eraseStatusElement();
-    display.printStatusElement();
+    display.eraseLogElement();
+    display.printLogElement();
     display.eraseBoard();
     display.drawBoard();
   });

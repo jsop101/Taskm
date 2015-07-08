@@ -3,8 +3,16 @@ var StatusElement = function(statusPosition){
   this.statusPosition = statusPosition;
 };
 
+StatusElement.prototype.activeDOMBoardElement = function(taskName){
+  return '<td class="progress_field active" id="' + this.statusPosition + '">' + taskName + '</td>'
+};
+
+StatusElement.prototype.regularDOMBoardElement = function(){
+  return '<td class="progress_field" id="' + this.statusPosition + '">' + this.statusPosition + '</td>';
+};
+
 // Ajax call to get status details from database
-StatusElement.prototype.printStatusElement = function(event){
+StatusElement.prototype.printLogElement = function(event){
   var url = '/tasks/' + window.location.href.split("/").pop() + '/' // Scrapping task id from href
   var currentPositionInTime = this.statusPosition;
   $.ajax({

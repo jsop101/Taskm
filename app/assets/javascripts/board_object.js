@@ -8,29 +8,29 @@ var Board = function(task){
 Board.prototype.drawBoard = function() {
   for (var i = 1; i <= this.boardLength; i++) {
     if (this.task.positionInTime === i) {
-      this.printCurrentPositionInTime(i);
+      this.printActivePosition(i);
     } else {
-      this.printEmptyPositionInTime(i);
+      this.printRegularPosition(i);
     };
   };
 };
 
+// Get DOM string from StatusElement for drawBoard()
+Board.prototype.printActivePosition = function(numInOrder){
+  $("tr.progress_line").append(this.task.allStatusElements[numInOrder].activeDOMBoardElement(this.task.taskName));
+};
+Board.prototype.printRegularPosition = function(numInOrder){
+  $("tr.progress_line").append(this.task.allStatusElements[numInOrder].regularDOMBoardElement());
+};
 Board.prototype.eraseBoard = function() {
   $("tr.progress_line").empty();
 };
 
-Board.prototype.printCurrentPositionInTime = function(numInOrder){
-  $("tr.progress_line").append('<td class="progress_field active" id="' + numInOrder + '">' + this.task.taskName + '</td>')
+// DOM is manipulated from StatusElement function, because of Ajax call
+Board.prototype.printLogElement = function(){
+  this.task.allStatusElements[this.task.positionInTime].printLogElement();
 };
 
-Board.prototype.printEmptyPositionInTime = function(numInOrder){
-  $("tr.progress_line").append('<td class="progress_field" id="' + numInOrder + '">' + numInOrder + '</td>');
-};
-
-Board.prototype.printStatusElement = function(){
-  this.task.allStatusElements[this.task.positionInTime].printStatusElement();
-};
-
-Board.prototype.eraseStatusElement = function(){
+Board.prototype.eraseLogElement = function(){
   $('div.task_log_container div:last-child').remove()
 };
