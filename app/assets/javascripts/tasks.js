@@ -1,6 +1,6 @@
 var myTaskObject;
 var currentPositionInTime;
-var numOfAllTaskEvents = 5;
+var numOfAllTaskEvents = 9;
 // var numOfAllTaskEvents;
 // var currentTaskId = window.location.href.split("/").pop()
 // $(document).ready(function(){
@@ -37,11 +37,11 @@ Task.prototype.gobackInTime = function(){
 };
 
 var Board = function(task){
-  this.boardLength = task.allStatusElements.length - 1;
+  this.boardLength = task.allStatusElements.length;
   this.task = task;
 };
 Board.prototype.drawBoard = function() {
-  for (var i = 0; i <= this.boardLength; i++) {
+  for (var i = 1; i < this.boardLength; i++) {
     if (this.task.positionInTime === i) {
       this.printCurrentPositionInTime(i);
     } else {
@@ -69,9 +69,9 @@ var StatusElement = function(statusPosition){
   this.statusPosition = statusPosition;
 }
 StatusElement.prototype.printStatusElement = function(){
-  // debugger;
   var url = '/tasks/' + window.location.href.split("/").pop() + '/'
   currentPositionInTime = this.statusPosition;
+  // debugger;
   $.ajax({
     url: url,
     type: 'get',
@@ -79,7 +79,7 @@ StatusElement.prototype.printStatusElement = function(){
     data: {"position_in_time": currentPositionInTime}
   }).done(function(response) {
     // debugger;
-    $("div.task_log_container").append('<div class="task_log_element"><p class="task_log_line">' + "Step " + currentPositionInTime + '</p><p class="task_log_line">' + "Assigned to: " + response.assignee + '</p><p class="task_log_line">' + "Status: " + response.current_status  + '</p>'); //+'<p class="task_log_line">' + "Why: " + response.why + '</p></div>');
+    $("div.task_log_container").append('<div class="task_log_element"><p class="task_log_line">' + "Step " + currentPositionInTime + '</p><p class="task_log_line">' + "Assigned to: " + response.assignee + '</p><p class="task_log_line">' + "Status: " + response.current_status  + '</p>');
   });
 }
 
@@ -94,7 +94,6 @@ $(document).ready(function(){
       myTaskObject.advanceInTime();
       display.eraseLogElement();
       display.printLogElement();
-      // debugger;
       display.eraseBoard();
       display.drawBoard();
     };
@@ -109,8 +108,7 @@ $(document).ready(function(){
     };
   });
   $('body').on("click","tr.progress_line",function(event){
-    // alert(event.target.id);
-    myTaskObject.positionInTime = event.target.id;
+    myTaskObject.positionInTime = parseInt(event.target.id);
     display.eraseLogElement();
     display.printLogElement();
     display.eraseBoard();
