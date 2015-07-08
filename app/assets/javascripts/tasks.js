@@ -1,10 +1,10 @@
 var myTaskObject;
 var currentPositionInTime;
 var numOfAllTaskEvents = 9;
+
 // var numOfAllTaskEvents;
 // var currentTaskId = window.location.href.split("/").pop()
 // $(document).ready(function(){
-
     // var url = '/tasks/' + currentTaskId + '/'
     // $.ajax({
     //   url: url,
@@ -15,7 +15,6 @@ var numOfAllTaskEvents = 9;
     // });
 // var GetNumOfAllTaskEvents = (function (){
 // })();
-
 // debugger;
 
 var Task = function(taskName) {
@@ -37,11 +36,11 @@ Task.prototype.gobackInTime = function(){
 };
 
 var Board = function(task){
-  this.boardLength = task.allStatusElements.length;
+  this.boardLength = task.allStatusElements.length - 1;
   this.task = task;
 };
 Board.prototype.drawBoard = function() {
-  for (var i = 1; i < this.boardLength; i++) {
+  for (var i = 1; i <= this.boardLength; i++) {
     if (this.task.positionInTime === i) {
       this.printCurrentPositionInTime(i);
     } else {
@@ -71,14 +70,12 @@ var StatusElement = function(statusPosition){
 StatusElement.prototype.printStatusElement = function(){
   var url = '/tasks/' + window.location.href.split("/").pop() + '/'
   currentPositionInTime = this.statusPosition;
-  // debugger;
   $.ajax({
     url: url,
     type: 'get',
     dataType: 'JSON',
     data: {"position_in_time": currentPositionInTime}
   }).done(function(response) {
-    // debugger;
     $("div.task_log_container").append('<div class="task_log_element"><p class="task_log_line">' + "Step " + currentPositionInTime + '</p><p class="task_log_line">' + "Assigned to: " + response.assignee + '</p><p class="task_log_line">' + "Status: " + response.current_status  + '</p>');
   });
 }
@@ -99,7 +96,7 @@ $(document).ready(function(){
     };
   });
   $('body').on("click", 'button.time_travel_back', function(event){
-    if (display.task.positionInTime > 0) {
+    if (display.task.positionInTime > 1) {
       myTaskObject.gobackInTime();
       display.eraseLogElement();
       display.printLogElement();
