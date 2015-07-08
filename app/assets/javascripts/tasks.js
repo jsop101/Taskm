@@ -1,7 +1,8 @@
 var myTaskObject;
 var numOfAllTaskEvents;
+var allStatusElements;
+var currentPositionInTime
 var currentTaskId = window.location.href.split("/").pop()
-
 // $(document).ready(function(){
 
     // var url = '/tasks/' + currentTaskId + '/'
@@ -12,67 +13,93 @@ var currentTaskId = window.location.href.split("/").pop()
     //   console.log(response)
     //   // debugger;
     // });
-  // var GetNumOfAllTaskEvents = (function (){
-  // })();
+// var GetNumOfAllTaskEvents = (function (){
+// })();
 
-  // debugger;
+// debugger;
 
-  var Task = function(taskName, taskLength) {
-    this.taskName = taskName;
-    this.taskLength = taskLength;
-    this.positionInTime = 0;
-  };
-  Task.prototype.advanceInTime = function(){
-    this.positionInTime++;
-  };
-  Task.prototype.gobackInTime = function(){
-    this.positionInTime--;
-  };
+var Task = function(taskName, taskLength) {
+  this.taskName = taskName;
+  this.taskLength = taskLength;
+  this.positionInTime = 0;
+};
+Task.prototype.advanceInTime = function(){
+  this.positionInTime++;
+};
+Task.prototype.gobackInTime = function(){
+  this.positionInTime--;
+};
 
-  var Board = function(task){
-    this.boardLength = task.taskLength;
-    this.task = task;
-  };
-
-  Board.prototype.drawBoard = function() {
-    for (var i = 0; i <= this.task.taskLength; i++) {
-      if (this.task.positionInTime === i) {
-        this.printCurrentPositionInTime();
-      } else {
-        this.printEmptyPositionInTime(i);
-      };
+var Board = function(task){
+  this.boardLength = task.taskLength;
+  this.task = task;
+};
+Board.prototype.drawBoard = function() {
+  allStatusElements = new Array();
+  for (var i = 0; i <= this.task.taskLength; i++) {
+    if (this.task.positionInTime === i) {
+      myStatusElement = new StatusElement(i);
+      // debugger;
+      myStatusElement.printStatusElement();
+      // debugger;
+      allStatusElements.push(myStatusElement);
+      // this.printCurrentPositionInTime();
+    } else {
+      myStatusElement = new StatusElement(i);
+      myStatusElement.printStatusElement();
+      allStatusElements.push(myStatusElement);
+      // this.printEmptyPositionInTime(i);
     };
   };
-  Board.prototype.eraseBoard = function() {
-    $("tr.progress_line").empty();
-  };
-  Board.prototype.printCurrentPositionInTime = function(){
-    $("tr.progress_line").append('<td class="progress_field active">' + this.task.taskName + '</td>')
-  };
-  Board.prototype.printEmptyPositionInTime = function(numInOrder){
-    $("tr.progress_line").append('<td class="progress_field">' + numInOrder + '</td>');
-  };
-  Board.prototype.printLogElement = function(){
-    var url = '/tasks/' + currentTaskId + '/'
+};
+Board.prototype.eraseBoard = function() {
+  $("tr.progress_line").empty();
+};
+Board.prototype.printCurrentPositionInTime = function(){
+  $("tr.progress_line").append('<td class="progress_field active">' + this.task.taskName + '</td>')
+};
+Board.prototype.printEmptyPositionInTime = function(numInOrder){
+  $("tr.progress_line").append('<td class="progress_field">' + numInOrder + '</td>');
+};
+Board.prototype.printLogElement = function(){
+  var url = '/tasks/' + window.location.href.split("/").pop() + '/';
+  currentPositionInTime = this.task.positionInTime;
+  // debugger;
+  $.ajax({
+    url: url,
+    type: 'get',
+    dataType: 'JSON',
+    data: {"position_in_time": currentPositionInTime}
+  }).done(function(response) {
     // debugger;
-    $.ajax({
-      url: url,
-      type: 'get',
-      dataType: 'JSON',
-      data: {"position_in_time": this.task.positionInTime}
-    }).done(function(response) {
-      $("div.task_log_container").append('<div class="task_log_element"><p class="task_log_line">' + "Step " + myTaskObject.positionInTime + '</p><p class="task_log_line">' + "Assigned to: " + response.assignee + '</p><p class="task_log_line">' + "Status: " + response.current_status  + '</p>'); //+'<p class="task_log_line">' + "Why: " + response.why + '</p></div>');
-    });
-  };
-  Board.prototype.eraseLogElement = function(){
-    $('div.task_log_container div:last-child').remove()
-  };
+    $("div.task_log_container").append('<div class="task_log_element"><p class="task_log_line">' + "Step " + currentPositionInTime + '</p><p class="task_log_line">' + "Assigned to: " + response.assignee + '</p><p class="task_log_line">' + "Status: " + response.current_status  + '</p>'); //+'<p class="task_log_line">' + "Why: " + response.why + '</p></div>');
+  });
+};
+Board.prototype.eraseLogElement = function(){
+  $('div.task_log_container div:last-child').remove()
+};
 
-  var StatusElement = function(statusPosition){
-    this.statusPosition = statusPosition;
-  }
+var StatusElement = function(statusPosition){
+  this.statusPosition = statusPosition;
+}
+StatusElement.prototype.printStatusElement = function(){
+  debugger;
+  var url = '/tasks/' + window.location.href.split("/").pop() + '/'
+  currentPositionInTime = this.statusPosition;
+  $.ajax({
+    url: url,
+    type: 'get',
+    dataType: 'JSON',
+    data: {"position_in_time": currentPositionInTime}
+  }).done(function(response) {
+    debugger;
+    $("div.task_log_container").append('<div class="task_log_element"><p class="task_log_line">' + "Step " + currentPositionInTime + '</p><p class="task_log_line">' + "Assigned to: " + response.assignee + '</p><p class="task_log_line">' + "Status: " + response.current_status  + '</p>'); //+'<p class="task_log_line">' + "Why: " + response.why + '</p></div>');
+  });
+}
 
-  myTaskObject = new Task('My Task', 5);
+
+
+myTaskObject = new Task('My Task', 5);
 
 $(document).ready(function(){
 
