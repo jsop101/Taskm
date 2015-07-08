@@ -1,8 +1,8 @@
 var myTaskObject;
-var numOfAllTaskEvents;
-var allStatusElements;
-var currentPositionInTime
-var currentTaskId = window.location.href.split("/").pop()
+var currentPositionInTime;
+var numOfAllTaskEvents = 5;
+// var numOfAllTaskEvents;
+// var currentTaskId = window.location.href.split("/").pop()
 // $(document).ready(function(){
 
     // var url = '/tasks/' + currentTaskId + '/'
@@ -18,10 +18,16 @@ var currentTaskId = window.location.href.split("/").pop()
 
 // debugger;
 
-var Task = function(taskName, taskLength) {
+var Task = function(taskName) {
   this.taskName = taskName;
-  this.taskLength = taskLength;
   this.positionInTime = 0;
+  this.allStatusElements = (function(){
+    var arrayOfAllStatusElements = new Array();
+    for (var i = 0; i < numOfAllTaskEvents; i++){
+      arrayOfAllStatusElements.push(new StatusElement(i))
+    };
+    return arrayOfAllStatusElements;
+  })();
 };
 Task.prototype.advanceInTime = function(){
   this.positionInTime++;
@@ -29,26 +35,24 @@ Task.prototype.advanceInTime = function(){
 Task.prototype.gobackInTime = function(){
   this.positionInTime--;
 };
+// Task.prototype.allStatusElements = function(){
+//   var arrayOfAllStatusElements = new Array();
+//   for (var i = 0; i <= this.allStatusElements.length; i++){
+//     arrayOfAllStatusElements.push(new StatusElement(i))
+//   };
+//   return arrayOfAllStatusElements;
+// };
 
 var Board = function(task){
-  this.boardLength = task.taskLength;
+  this.boardLength = task.allStatusElements.length;
   this.task = task;
 };
 Board.prototype.drawBoard = function() {
-  allStatusElements = new Array();
-  for (var i = 0; i <= this.task.taskLength; i++) {
+  for (var i = 0; i <= this.task.allStatusElements.length; i++) {
     if (this.task.positionInTime === i) {
-      myStatusElement = new StatusElement(i);
-      // debugger;
-      myStatusElement.printStatusElement();
-      // debugger;
-      allStatusElements.push(myStatusElement);
-      // this.printCurrentPositionInTime();
+      this.printCurrentPositionInTime();
     } else {
-      myStatusElement = new StatusElement(i);
-      myStatusElement.printStatusElement();
-      allStatusElements.push(myStatusElement);
-      // this.printEmptyPositionInTime(i);
+      this.printEmptyPositionInTime(i);
     };
   };
 };
@@ -83,7 +87,7 @@ var StatusElement = function(statusPosition){
   this.statusPosition = statusPosition;
 }
 StatusElement.prototype.printStatusElement = function(){
-  debugger;
+  // debugger;
   var url = '/tasks/' + window.location.href.split("/").pop() + '/'
   currentPositionInTime = this.statusPosition;
   $.ajax({
@@ -92,14 +96,14 @@ StatusElement.prototype.printStatusElement = function(){
     dataType: 'JSON',
     data: {"position_in_time": currentPositionInTime}
   }).done(function(response) {
-    debugger;
+    // debugger;
     $("div.task_log_container").append('<div class="task_log_element"><p class="task_log_line">' + "Step " + currentPositionInTime + '</p><p class="task_log_line">' + "Assigned to: " + response.assignee + '</p><p class="task_log_line">' + "Status: " + response.current_status  + '</p>'); //+'<p class="task_log_line">' + "Why: " + response.why + '</p></div>');
   });
 }
 
 
 
-myTaskObject = new Task('My Task', 5);
+myTaskObject = new Task('My Task', numOfAllTaskEvents);
 
 $(document).ready(function(){
 
