@@ -2,12 +2,12 @@
 var Task = function(taskName) {
   this.taskName = taskName;
   this.positionInTime = 0;
-  this.allStatusElements = (function(){ // Iffy retruning array of StatusElement objects.
-    var arrayOfAllStatusElements = new Array();
+  this.allTaskEvents = (function(){ // Iffy retruning array of TaskEvent objects.
+    var arrayOfAllTaskEvents = new Array();
     for (var i = 0; i <= numOfAllTaskEvents; i++){
-      arrayOfAllStatusElements.push(new StatusElement(i))
+      arrayOfAllTaskEvents.push(new TaskEvent(i))
     };
-    return arrayOfAllStatusElements;
+    return arrayOfAllTaskEvents;
   })();
 };
 
