@@ -2,20 +2,6 @@ var myTaskObject;
 var currentPositionInTime;
 var numOfAllTaskEvents = 9;
 
-// var numOfAllTaskEvents;
-// var currentTaskId = window.location.href.split("/").pop()
-// $(document).ready(function(){
-    // var url = '/tasks/' + currentTaskId + '/'
-    // $.ajax({
-    //   url: url,
-    //   type: 'get',
-    // }).done(function(response){
-    //   console.log(response)
-    //   // debugger;
-    // });
-// var GetNumOfAllTaskEvents = (function (){
-// })();
-// debugger;
 
 var Task = function(taskName) {
   this.taskName = taskName;
@@ -67,7 +53,8 @@ Board.prototype.eraseLogElement = function(){
 var StatusElement = function(statusPosition){
   this.statusPosition = statusPosition;
 }
-StatusElement.prototype.printStatusElement = function(){
+StatusElement.prototype.printStatusElement = function(event){
+
   var url = '/tasks/' + window.location.href.split("/").pop() + '/'
   currentPositionInTime = this.statusPosition;
   $.ajax({
@@ -82,10 +69,10 @@ StatusElement.prototype.printStatusElement = function(){
 
 myTaskObject = new Task('My Task', numOfAllTaskEvents);
 
-$(document).ready(function(){
-
+var pageLoading = function(){
   var display = new Board(myTaskObject);
   display.drawBoard();
+  // debugger;
   $('body').on("click", 'button.time_travel_next', function(event){
     if (display.task.positionInTime < display.boardLength) {
       myTaskObject.advanceInTime();
@@ -111,4 +98,7 @@ $(document).ready(function(){
     display.eraseBoard();
     display.drawBoard();
   });
-});
+};
+
+$(document).ready(pageLoading);
+$(document).on('page:load', pageLoading);
