@@ -1,9 +1,11 @@
+// StatusElement object
 var StatusElement = function(statusPosition){
   this.statusPosition = statusPosition;
 };
 
+// Ajax call to get status details from database
 StatusElement.prototype.printStatusElement = function(event){
-  var url = '/tasks/' + window.location.href.split("/").pop() + '/'
+  var url = '/tasks/' + window.location.href.split("/").pop() + '/' // Scrapping task id from href
   var currentPositionInTime = this.statusPosition;
   $.ajax({
     url: url,
