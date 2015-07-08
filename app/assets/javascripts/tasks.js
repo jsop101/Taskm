@@ -68,8 +68,12 @@ var currentTaskId = window.location.href.split("/").pop()
     $('div.task_log_container div:last-child').remove()
   };
 
+  var StatusElement = function(statusPosition){
+    this.statusPosition = statusPosition;
+  }
+
   myTaskObject = new Task('My Task', 5);
-  // debugger;
+
 $(document).ready(function(){
 
   var display = new Board(myTaskObject);
